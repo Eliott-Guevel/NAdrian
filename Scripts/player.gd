@@ -65,7 +65,6 @@ func take_damage():
 		return  # Ignore damage while invincible
 		
 	health -= 1
-	print(health)
 	hp_meter.value -= 1
 	
 	start_invincibility()
