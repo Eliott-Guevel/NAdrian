@@ -24,8 +24,6 @@ window/size/viewport_height=1280
 
 project/assembly_name="Bullet Hell"
 
-[editor]
-
 [input]
 
 move_right={
