@@ -1,17 +1,24 @@
 extends BulletPattern
 
 func _ready():
-	fire_rate = 0.1
+	fire_rate = 1
 	super()
 
 func fire():
 	var b = enemy_bullet.instantiate()
+	# scales the bullet and its hitbox
+	b.scale.x = 100.0
+	var hitbox = b.get_node("Area2D/CollisionShape2D")
+	# do fun things with moving / random small hitbox placement on wide bullet :)
+	# need to fix hitbox scaling, only on center currently
+	hitbox.shape.extents.x *= 100.0
+	#b.collisionshape.radius = $Sprite2D.texture.get_width()
 	b.initialize(Vector2(0, 1), 400)
-	#var b2 = enemy_bullet.instantiate()
-	#b2.initialize(Vector2(0, -1), 400)
-	b.position = Vector2(enemy.position.x - 10, enemy.position.y)
-	#b2.position = Vector2(enemy.position.x + i * 10, enemy.position.y + 600)
-	
-	# add bullets as children of Projectiles
+		#var b2 = enemy_bullet.instantiate()
+		#b2.initialize(Vector2(0, -1), 400)
+	b.position = Vector2(enemy.position.x, enemy.position.y)
+		#b2.position = Vector2(enemy.position.x + i * 10, enemy.position.y + 600)
+		
+		# add bullets as children of Projectiles
 	get_tree().current_scene.get_node("Projectiles").add_child(b)
-	#get_tree().current_scene.get_node("Projectiles").add_child(b2)
+		#get_tree().current_scene.get_node("Projectiles").add_child(b2)

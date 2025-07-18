@@ -9,3 +9,6 @@ func _process(delta: float) -> void:
 	# change color of stance_meter when it's full to Red
 	if(stance_meter.value == 100.0):
 		stance_meter.tint_progress = Color(1, 0, 0)
+	#reset color
+	else:
+		stance_meter.tint_progress = Color(1, 1, 1)

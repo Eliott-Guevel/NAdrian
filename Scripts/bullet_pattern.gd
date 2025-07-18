@@ -7,6 +7,7 @@ var fire_timer: Timer
 var enemy_bullet = load("res://Scenes/enemy_bullet.tscn")
 @onready var enemy = get_tree().current_scene.get_node("Enemy")
 @onready var player = get_tree().current_scene.get_node("Player")
+@onready var collision_shape = $Area2D/CollisionShape2D
 
 func _ready():
 	fire_timer = Timer.new()

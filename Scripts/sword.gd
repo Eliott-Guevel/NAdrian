@@ -1,7 +1,7 @@
 extends Weapon
 
 var rect_width: float = 128
-var rect_height: float = 64
+var rect_height: float = 128
 var rect_color: Color = Color.RED
 
 var draw_attack_rect: bool = false
@@ -10,7 +10,8 @@ var frozen_rect_position: Vector2
 var frozen_rect_size: Vector2
 var attack_frozen := false
 
-var damage_zone_duration := 0.2 # seconds
+var damage_zone_duration := 0.3 # seconds
+var damage_zone_timer := 0.0
 @onready var projectiles = get_node("/root/Game/Projectiles")
 
 func _init(parent_node):
@@ -33,18 +34,27 @@ func do_attack():
 	var world_rect := Rect2(frozen_rect_position, frozen_rect_size)
 	draw_rect_local = Rect2(world_rect.position - global_position, world_rect.size)
 	draw_attack_rect = true
+	damage_zone_timer = damage_zone_duration
 	queue_redraw()
 
-	# Delete bullets inside attack zone
-	for bullet in projectiles.get_children():
-		if world_rect.has_point(bullet.global_position):
-			stance_meter.value += 5
-			bullet.queue_free()
+func _process(delta):
+	if damage_zone_timer > 0:
+		damage_zone_timer -= delta
+		
+		# Define world-space rect
+		var world_rect = Rect2(frozen_rect_position, frozen_rect_size)
 
-	# Hide the rectangle after damage_zone_duration seconds
-	await get_tree().create_timer(damage_zone_duration).timeout
-	draw_attack_rect = false
-	queue_redraw()
+		# Delete bullets inside attack zone
+		for bullet in projectiles.get_children():
+			if world_rect.has_point(bullet.global_position):
+				print("delete")
+				stance_meter.value += 50
+				bullet.queue_free()
+
+		# End of active zone time
+		if damage_zone_timer <= 0:
+			draw_attack_rect = false
+			queue_redraw()
 
 func _draw():
 	if draw_attack_rect:
