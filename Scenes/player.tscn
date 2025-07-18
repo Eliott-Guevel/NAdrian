@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://cf72ldc7gnbko"]
+
+[ext_resource type="Texture2D" uid="uid://k6jib5aui836" path="res://icon.svg" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://djx3mdqs38lwn" path="res://Scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://cvduw1r1kh3hx" path="res://adrien pp.png" id="3_6t5aa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cvnsp"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_g2els")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_3vyb7")
+
+[node name="HitboxArea" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="Hitbox" type="CollisionShape2D" parent="HitboxArea"]
+shape = SubResource("RectangleShape2D_qhqgy")
+
+[node name="GrazeArea" type="Area2D" parent="."]
+
+[node name="Graze" type="CollisionShape2D" parent="GrazeArea"]
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_cvnsp")
+
+[node name="Sprite2D" type="Sprite2D" parent="GrazeArea"]
+self_modulate = Color(1, 1, 1, 0.207843)
+position = Vector2(1.375, 0.0625019)
+scale = Vector2(0.646084, 0.732914)
+texture = ExtResource("3_6t5aa")
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+
+[connection signal="area_entered" from="GrazeArea" to="." method="_on_graze_area_area_entered"]
+[connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
