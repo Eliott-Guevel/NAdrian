@@ -15,6 +15,8 @@ var weapon: Weapon
 var sword = preload("res://Scripts/sword.gd").new(self)
 var laser = preload("res://Scripts/laser.gd").new(self)
 
+var graze_cooldown: float
+const GRAZE_COOLDOWN := 0.3 # seconds
 @onready var projectiles = get_node("/root/Game/Projectiles")
 
 var speed: int
@@ -57,6 +59,9 @@ func _process(delta: float) -> void:
 	weapon.update_cooldown(delta)
 	if Input.is_action_just_pressed("shoot"):
 		weapon.attack()
+	
+	if graze_cooldown > 0:
+		graze_cooldown -= delta
 		
 func take_damage():
 	if invincible:
@@ -72,12 +77,14 @@ func take_damage():
 func start_invincibility():
 	invincible = true
 	invincibility_timer.start(0.5)  # Duration in seconds, e.g. 0.5
+	# player can't graze when hit
 	# clignotement sprite ?
 	$Sprite2D.modulate = Color(1, 0, 0)
 
 func _on_invincibility_timer_timeout() -> void:
 	invincible = false
 	# stop clignotement ?
+	# player can graze again after getting hit
 	$Sprite2D.modulate = Color(1, 1, 1)
 		
 func die():
@@ -101,7 +108,9 @@ func set_stance(stance):
 func _on_graze_area_area_entered(area: Area2D) -> void:
 	# collision mask 1
 	if(current_stance == Stance.LASER):
-			#and not area.get_meta("grazed", false)
-		if area.get_parent() in projectiles.get_children():
-			#area.set_meta("grazed", true)
-			stance_meter.value += 10
+		var enemy_bullet = area.get_parent()
+		if enemy_bullet in projectiles.get_children():
+			# cooldown on graze for same projectile
+			if graze_cooldown <= 0:
+				graze_cooldown = GRAZE_COOLDOWN
+				stance_meter.value += 10

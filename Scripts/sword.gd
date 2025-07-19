@@ -68,11 +68,6 @@ func _process(delta):
 			queue_redraw()
 			damage_dealt = false
 
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	# collision with enemy (collision mask 3)
-	print("enter")
-	area.get_parent().take_damage()
-
 func _draw():
 	if draw_attack_rect:
 		draw_rect(draw_rect_local, rect_color, false, 2.0)
