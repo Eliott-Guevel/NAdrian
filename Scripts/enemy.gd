@@ -46,6 +46,7 @@ func _process(delta: float) -> void:
 func take_damage():
 	#no need for i-frames since each weapon has a cooldown
 	health -= 1
+	print(health)
 	
 	# change color to indicate that the enemy has been hit
 	$Sprite2D.modulate = Color(0, 0, 0)

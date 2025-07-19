@@ -12,7 +12,10 @@ var attack_frozen := false
 
 var damage_zone_duration := 0.3 # seconds
 var damage_zone_timer := 0.0
+var damage_dealt := false # Need to only inflict damage once, not for every frame of the parry
 @onready var projectiles = get_node("/root/Game/Projectiles")
+@onready var enemy = get_node("/root/Game/Enemy")
+@onready var enemy_hitbox = enemy.get_node("HitboxArea/Hitbox")
 
 func _init(parent_node):
 	# need to add it to the scene tree in order to access signals, get_tree()...
@@ -43,6 +46,15 @@ func _process(delta):
 		
 		# Define world-space rect
 		var world_rect = Rect2(frozen_rect_position, frozen_rect_size)
+		
+		# Inflict dmg to boss inside damage zone
+		if(damage_dealt == false):
+			var enemy_hitbox_size = enemy_hitbox.shape.size  # Vector2
+			var top_left = enemy_hitbox.global_position - (enemy_hitbox_size * 0.5)
+			var enemy_hitbox_rect = Rect2(top_left, enemy_hitbox_size)
+			if world_rect.intersects(enemy_hitbox_rect):
+				enemy.take_damage()
+				damage_dealt = true
 
 		# Delete bullets inside attack zone
 		for bullet in projectiles.get_children():
@@ -54,6 +66,12 @@ func _process(delta):
 		if damage_zone_timer <= 0:
 			draw_attack_rect = false
 			queue_redraw()
+			damage_dealt = false
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	# collision with enemy (collision mask 3)
+	print("enter")
+	area.get_parent().take_damage()
 
 func _draw():
 	if draw_attack_rect:
