@@ -1,7 +1,6 @@
 extends Node2D
 
 @onready var hp_meter = get_node("/root/Game/CanvasLayer/HPMeter")
-var health: int
 
 var invincible := false
 @onready var invincibility_timer = $InvincibilityTimer
@@ -24,7 +23,6 @@ var velocity := Vector2.ZERO
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_stance(Stance.SWORD)
-	self.health = hp_meter.value
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -64,12 +62,11 @@ func take_damage():
 	if invincible:
 		return  # Ignore damage while invincible
 		
-	health -= 1
 	hp_meter.value -= 1
 	
 	start_invincibility()
 	
-	if(health == 0):
+	if(hp_meter.value == 0):
 		die()
 		
 func start_invincibility():
