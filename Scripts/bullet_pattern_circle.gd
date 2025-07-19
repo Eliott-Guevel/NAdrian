@@ -5,7 +5,7 @@ func _ready():
 	super()
 
 func fire():
-	for i in range(10):
+	for i in range(3):
 		#var b = enemy_bullet.instantiate()
 		#b.initialize(Vector2(0, 1), 800)
 		var b2 = enemy_bullet.instantiate()
