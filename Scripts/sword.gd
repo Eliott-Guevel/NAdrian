@@ -47,7 +47,6 @@ func _process(delta):
 		# Delete bullets inside attack zone
 		for bullet in projectiles.get_children():
 			if world_rect.has_point(bullet.global_position):
-				print("delete")
 				stance_meter.value += 50
 				bullet.queue_free()
 

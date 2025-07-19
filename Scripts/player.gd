@@ -99,6 +99,7 @@ func set_stance(stance):
 		weapon = laser
 
 func _on_graze_area_area_entered(area: Area2D) -> void:
+	# collision mask 1
 	if(current_stance == Stance.LASER):
 			#and not area.get_meta("grazed", false)
 		if area.get_parent() in projectiles.get_children():
