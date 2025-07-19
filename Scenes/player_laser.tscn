@@ -1,18 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://c8lq4ybi2o73c"]
 
-[ext_resource type="Script" uid="uid://cyeluwprcnvi1" path="res://Scripts/player_bullet.gd" id="1_3m2mg"]
-[ext_resource type="Texture2D" uid="uid://k6jib5aui836" path="res://icon.svg" id="2_jskx8"]
+[ext_resource type="Script" uid="uid://cyeluwprcnvi1" path="res://Scripts/player_laser.gd" id="1_8ikq2"]
+[ext_resource type="Texture2D" uid="uid://k6jib5aui836" path="res://icon.svg" id="2_dng6p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oduel"]
 size = Vector2(12, 12)
 
-[node name="Player_Bullet" type="Node2D"]
-script = ExtResource("1_3m2mg")
+[node name="Player_Laser" type="Node2D"]
+script = ExtResource("1_8ikq2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 1, 1, 1)
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_jskx8")
+texture = ExtResource("2_dng6p")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(4.17233e-07, 0)

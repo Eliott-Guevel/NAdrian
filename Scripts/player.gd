@@ -21,7 +21,7 @@ var graze_state: bool
 
 @onready var projectiles = get_node("/root/Game/Projectiles")
 
-var speed: int
+@export var speed := 200
 var velocity := Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
@@ -101,12 +101,10 @@ func set_stance(stance):
 	
 	if stance == Stance.SWORD:
 		$Sprite2D.modulate = Color(1, 1, 1)
-		speed = 200
 		weapon = sword
 		
 	if stance == Stance.LASER:
 		$Sprite2D.modulate = Color(0, 0.5, 1)
-		speed = 100
 		weapon = laser
 
 func _on_graze_area_area_entered(area: Area2D) -> void:

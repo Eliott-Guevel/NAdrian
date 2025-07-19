@@ -4,7 +4,7 @@ class_name Weapon
 @export var damage: int
 @export var swing_speed: float
 @export var cooldown: float
-var cooldown_left: float = 0.0
+var cooldown_counter: float
 @onready var stance_meter = get_node("/root/Game/CanvasLayer/StanceMeter")
 
 func _init(parent_node):
@@ -12,13 +12,7 @@ func _init(parent_node):
 	parent_node.add_child(self)
 
 func attack():
-	if cooldown_left <= 0.0:
-		cooldown_left = cooldown
-		do_attack()
-
-func do_attack():
 	pass
-		
-func update_cooldown(delta: float) -> void:
-	if cooldown_left > 0.0:
-		cooldown_left -= delta
+
+func update_cooldown(cooldown):
+	pass

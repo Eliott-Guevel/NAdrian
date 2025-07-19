@@ -26,19 +26,28 @@ func _ready():
 	damage = 1
 	swing_speed = 1
 
-func do_attack():
-	var player_pos = get_parent().global_position
+func update_cooldown(delta: float) -> void:
+	# sword cooldown goes from cooldown (value) to 0.0
+	if cooldown_counter > 0.0:
+		cooldown_counter -= delta
 
-	# Lock the rect position and size
-	frozen_rect_position = player_pos + Vector2(-rect_width / 2, -rect_height)
-	frozen_rect_size = Vector2(rect_width, rect_height)
+func attack():
+		if cooldown_counter <= 0.0:
+			# reset cooldown after attack
+			cooldown_counter = cooldown
+			
+			var player_pos = get_parent().global_position
 
-	# Use the frozen values for drawing and hit detection
-	var world_rect := Rect2(frozen_rect_position, frozen_rect_size)
-	draw_rect_local = Rect2(world_rect.position - global_position, world_rect.size)
-	draw_attack_rect = true
-	damage_zone_timer = damage_zone_duration
-	queue_redraw()
+			# Lock the rect position and size
+			frozen_rect_position = player_pos + Vector2(-rect_width / 2, -rect_height)
+			frozen_rect_size = Vector2(rect_width, rect_height)
+
+			# Use the frozen values for drawing and hit detection
+			var world_rect := Rect2(frozen_rect_position, frozen_rect_size)
+			draw_rect_local = Rect2(world_rect.position - global_position, world_rect.size)
+			draw_attack_rect = true
+			damage_zone_timer = damage_zone_duration
+			queue_redraw()
 
 func _process(delta):
 	if damage_zone_timer > 0:
