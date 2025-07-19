@@ -8,11 +8,23 @@ var simple_instance
 var bullet_pattern_circle: PackedScene = preload("res://Scenes/bullet_pattern_circle.tscn")
 var circle_instance
 
+# Edges of screen
+var left_edge
+var right_edge
+
+@export var speed := 100.0
+var direction = 1
+
 @export var health = 5
 @onready var game = get_node("/root/Game")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# get screen edges
+	var screen_rect = get_viewport().get_visible_rect()
+	left_edge = screen_rect.position.x + 200.0
+	right_edge = screen_rect.position.x + screen_rect.size.x - 200.0
+	
 	pattern_start(bullet_pattern_simple)
 	
 func pattern_start(new_pattern_scene: PackedScene):
@@ -37,8 +49,13 @@ func _on_pattern_timer_timeout() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
 	#movement
+	position.x += direction * speed * delta
+	
+	if position.x <= left_edge:
+		direction = 1
+	if position.x >= right_edge:
+		direction = -1
 	
 	#rotate(0.5 * delta)
 	#position.y += 200 * delta
